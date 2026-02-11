@@ -2,35 +2,47 @@ return {
   -- Automatically install LSPs and other tools
   {
     "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+    },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "clangd", "lua_ls" }, -- Install clangd for C/C++ projects
+        ensure_installed = { "clangd", "lua_ls", "pyright" },
       })
     end,
   },
-
   -- LSP Configuration (nvim-lspconfig provides the configuration data)
+  
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- Configure clangd using the new built-in API
-      vim.lsp.config("clangd", {
-        -- clangd will automatically find compile_commands.json in the project root
-        -- You can add extra options here if needed, e.g.:
-        -- extra_args = { "--background-index" },
+      -- Configure clangd
+      vim.lsp.config("clangd", {})
+      
+      -- Configure pyright with semantic tokens
+      vim.lsp.config("pyright", {
+        capabilities = {
+          textDocument = {
+            semanticTokens = {
+              dynamicRegistration = true,
+            }
+          }
+        }
       })
-
-      -- Enable clangd to activate for C/C++ filetypes
-      vim.lsp.enable({ "clangd" })
-
-      -- Set up keymaps after LSP client attaches to a buffer
+      
+      -- Enable both LSPs
+      vim.lsp.enable({ "clangd", "pyright" })
+      
+      -- Enable semantic highlighting
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities.semanticTokensProvider then
+            vim.lsp.semantic_tokens.start(args.buf, client.id)
+          end
+          
           local bufnr = args.buf
-
-          -- Buffer local mappings
           vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, { buffer = bufnr })
           vim.keymap.set('n', '[d', vim.diagnostic.goto_next, { buffer = bufnr })
           vim.keymap.set('n', ']d', vim.diagnostic.goto_prev, { buffer = bufnr })

@@ -1,14 +1,19 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  build = "TSUpdate",
-	lazy = false,   -- We want to see the highlighting since the start, so false
+  build = ":TSUpdate",
   config = function()
-    require "nvim-treesitter.configs".setup {
-        ensure_installed = { "c", "cpp", "java", "lua", "bash", "python" },
-        sync_install = true,
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
-    }
+    require("nvim-treesitter").setup({
+      ensure_installed = { "c", "cpp", "lua", "python", "vim", "vimdoc", "query" },
+      sync_install = false,
+      auto_install = true,
+      prefer_git = false,
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
+      indent = {
+        enable = true,
+      },
+    })
   end,
 }
