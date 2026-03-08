@@ -13,3 +13,5 @@ vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
 -- Neotree Keybinds
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle left<CR>')
+
+vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreviewToggle<cr>', { desc = 'Toggle Markdown Preview' })

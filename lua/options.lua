@@ -37,3 +37,11 @@ vim.keymap.set("n", "<Leader>ds", vim.diagnostic.open_float, { desc = "Show diag
 
 vim.opt.exrc = true        -- enable project-local config
 vim.opt.secure = true     -- restrict unsafe commands
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true  -- wrap at word boundaries
+    end
+})

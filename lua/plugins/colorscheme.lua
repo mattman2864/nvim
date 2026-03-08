@@ -17,10 +17,12 @@ return {
           "rose-pine",
           "nord",
           "onedark",
+          "solarized-osaka",
+          "vague",
         },
         livePreview = true, -- Preview theme while browsing
       })
-      
+
       -- Keybind to open theme switcher
       vim.keymap.set("n", "<leader>th", ":Themery<CR>", { desc = "Theme switcher" })
     end,
@@ -34,4 +36,6 @@ return {
   { "rose-pine/neovim", name = "rose-pine", lazy = false, priority = 1000 },
   { "shaunsingh/nord.nvim", lazy = false, priority = 1000 },
   { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
+  { "craftzdog/solarized-osaka.nvim", lazy = false, priority = 1000 },
+  { "vague-theme/vague.nvim", lazy = false, priority = 1000 },
 }
